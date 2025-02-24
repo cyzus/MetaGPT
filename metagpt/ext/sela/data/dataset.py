@@ -74,7 +74,7 @@ dataset description: {data_info_path} (During EDA, you can use this file to get 
 """
 
 
-SEED = 100
+SEED = 42
 TRAIN_TEST_SPLIT = 0.8
 TRAIN_DEV_SPLIT = 0.75
 
@@ -205,6 +205,7 @@ class ExpDataset:
     dataset_dir: str = None
     target_col: str = None
     name: str = None
+    dataset_info: dict = None
 
     def __init__(self, name, dataset_dir, **kwargs):
         self.name = name
@@ -212,6 +213,10 @@ class ExpDataset:
         self.target_col = kwargs.get("target_col", None)
         self.force_update = kwargs.get("force_update", False)
         self.save_dataset(target_col=self.target_col)
+
+
+    def create_dataset_dict(self):
+        return create_dataset_dict(self)
 
     def check_dataset_exists(self):
         fnames = [
@@ -244,6 +249,8 @@ class ExpDataset:
         return train_df, test_df
 
     def get_dataset_info(self):
+        if self.dataset_info is not None:
+            return self.dataset_info
         raw_df = pd.read_csv(Path(self.dataset_dir, self.name, "raw", "train.csv"))
         metadata = {
             "NumberOfClasses": raw_df[self.target_col].nunique(),

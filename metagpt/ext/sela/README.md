@@ -55,7 +55,7 @@ pip install -r requirements.txt
     This is a 05_house-prices-advanced-regression-techniques dataset.
     Your goal is to predict the target column `SalePrice`.
     Perform data analysis, data preprocessing, feature engineering, and modeling to predict the target.
-    Report rmse on the eval data. Do not plot or make any visualizations.''')
+    Report rmse on the eval data. Do not plot or make any visualizations.''', "SalePrice")
     data_dir = "Path/to/dataset"
 
     sela = SELA()

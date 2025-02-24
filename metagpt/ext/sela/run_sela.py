@@ -14,10 +14,10 @@ async def main():
     """
     # Example requirement and data path
     data_dir = "Path/to/dataset"
-
+    target_col = "RS"
     # Initialize Sela and run
     sela = SELA()
-    await sela.run(requirement, data_dir)
+    await sela.run(requirement, data_dir, target_col)
 
 
 if __name__ == "__main__":
