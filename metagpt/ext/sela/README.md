@@ -50,16 +50,16 @@ pip install -r requirements.txt
 
 - **Explanation of `run_sela.py`**
     ```bash
-    requirement = ('''
+    requirement = '''
     Optimize dataset using MCTS with 10 rollouts. 
     This is a 05_house-prices-advanced-regression-techniques dataset.
     Your goal is to predict the target column `SalePrice`.
     Perform data analysis, data preprocessing, feature engineering, and modeling to predict the target.
-    Report rmse on the eval data. Do not plot or make any visualizations.''', "SalePrice")
+    Report rmse on the eval data. Do not plot or make any visualizations.'''
     data_dir = "Path/to/dataset"
-
+    target_col = "SalePrice"
     sela = SELA()
-    await sela.run(requirement, data_dir)
+    await sela.run(requirement, data_dir, target_col)
     ```
 
 ## 4. SELA Reproduction Details
