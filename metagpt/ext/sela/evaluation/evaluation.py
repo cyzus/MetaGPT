@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score, f1_score, mean_squared_error, roc_au
 def evaluate_score(pred, gt, metric):
     if metric == "accuracy":
         return accuracy_score(gt, pred)
-    elif metric == "f1":
+    elif metric == "f1" or metric == "f1 binary":
         unique_classes = sorted(list(np.unique(gt)))
         if 1 in unique_classes and 0 in unique_classes:
             pos_label = 1

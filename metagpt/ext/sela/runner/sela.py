@@ -2,11 +2,13 @@ import argparse
 import json
 import os
 from typing import Optional
+from pathlib import Path
 
 from metagpt.ext.sela.runner.custom import CustomRunner
 from metagpt.ext.sela.runner.mcts import MCTSRunner
 from metagpt.ext.sela.runner.random_search import RandomSearchRunner
 from metagpt.ext.sela.runner.runner import Runner
+from metagpt.ext.sela.data.data_preparer import DatasetPreparer
 from metagpt.llm import LLM
 from metagpt.utils.common import CodeParser
 
@@ -139,19 +141,30 @@ class SELA:
         if config.exp_mode not in runners:
             raise ValueError(f"Invalid exp_mode: {config.exp_mode}")
         return runners[config.exp_mode]()
+    
+    def _check_data_dir(self, data_dir: str):
+        data_dir = Path(data_dir)
+        # check if the data_dir is a csv file
+        if data_dir.name.endswith(".csv"):
+            self.data_path = str(data_dir)
+        else:
+            self.data_path = str(data_dir / "raw" / "train.csv")
 
-    async def run(self, requirement: str, data_dir: Optional[str] = None):
+    async def run(self, requirement: str, data_dir: Optional[str] = None, target_col: Optional[str] = None):
         """
         Run the experiment with the given requirement and data directory.
         """
         if not os.path.exists(data_dir):
             raise FileNotFoundError(f"Dataset directory not found: {data_dir}")
-
+        self._check_data_dir(data_dir)
         config_all = await self._parse_requirement(requirement, data_dir)
         config_exp, data_info = config_all["config"], config_all["data_info"]
-
+        data_info["target_col"] = target_col
+        dataset_preparer = DatasetPreparer(config_exp.get("task"), data_info.get("target_col"), self.data_path, dataset_dict=data_info)
+        dataset_preparer.prepare_dataset()
+        data_info = dataset_preparer.get_dataset_dict()
         data_config = {
-            "datasets_dir": data_dir,
+            "datasets_dir": dataset_preparer.datasets_dir,
             "work_dir": "../../workspace",
             "role_dir": "storage/SELA",
             "datasets": {config_exp.get("task"): data_info},
