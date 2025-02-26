@@ -38,7 +38,7 @@ Output a JSON object with two parts:
   - "rollouts": int
   - "max_depth": int
   - "rs_mode": str (e.g., "single", "set")
-  - "special_instruction": str (e.g., "text", "image")
+  - "special_instruction": str (e.g., "text", "image", "stacking")
 - "data_info": A dictionary of experiment data information, with keys:
   - "dataset": str (e.g., "04_titanic")
   - "metric": str (e.g., "f1", "rmse")
