@@ -68,7 +68,9 @@ def get_di_args(parser):
     parser.add_argument("--reflection", dest="reflection", action="store_true")
     parser.add_argument("--no_reflection", dest="reflection", action="store_false")
     parser.add_argument("--num_experiments", type=int, default=1)
-    parser.add_argument("--special_instruction", type=str, default=None, choices=["ag", "stacking", "text", "image"])
+    parser.add_argument(
+        "--special_instruction", type=str, default=None, choices=["ag", "stacking", "text", "image", "study"]
+    )
     parser.set_defaults(reflection=True)
 
 

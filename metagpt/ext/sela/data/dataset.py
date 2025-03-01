@@ -38,7 +38,18 @@ STACKING = """
 """
 
 
-SPECIAL_INSTRUCTIONS = {"ag": USE_AG, "stacking": STACKING, "text": TEXT_MODALITY, "image": IMAGE_MODALITY}
+SUMMARIZED_STUDY = """
+Use TabPFN
+"""
+
+
+SPECIAL_INSTRUCTIONS = {
+    "ag": USE_AG,
+    "stacking": STACKING,
+    "text": TEXT_MODALITY,
+    "image": IMAGE_MODALITY,
+    "study": SUMMARIZED_STUDY,
+}
 
 DI_INSTRUCTION = """
 ## Attention

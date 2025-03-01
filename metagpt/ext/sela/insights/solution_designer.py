@@ -22,6 +22,39 @@ DATASET_DESCRIPTION_CUSTOM_PROMPT = """
 {dataset_description}
 """
 
+ADDITIONAL_GUIDE = """
+Here is a summarization for when to best use the respective models: 
+- TabPFN performs best when:
+
+The number of instances is small (≤ 1132),
+The number of numerical features without missing values (NaNs) is ≤ 65.
+
+- ResNet is suitable when:
+
+The number of instances is small (≤ 1132),
+The number of numerical features without NaNs exceeds 65.
+
+- XGBoost is recommended when:
+
+The number of instances is medium (between 1132 and 4211),
+Or when the maximum relative frequency of all target classes is ≤ 0.792.
+
+- CatBoost excels when:
+
+The number of instances is medium (between 1132 and 4211),
+The maximum relative frequency of target classes exceeds 0.792.
+
+- SAINT is a good choice when:
+
+The number of instances is large (> 4211),
+And the ratio of features to instances is ≤ 0.003.
+
+- ResNet (again) performs well when:
+
+The number of instances is large (> 4211),
+And the ratio of features to instances exceeds 0.003.
+"""
+
 DATASET_INSIGHT_PROMPT = """
 {description}
 
@@ -32,6 +65,8 @@ Each task type should have at least 5 insights.
 Make sure each method is diverse enough and can be implemented separately.
 Be specific about models' choices, ensemble and tuning techniques, and preprocessing & feature engineering techniques.
 Your model choices should be advanced enough to be helpful.
+
+{additional_guide}
 
 # Format
 ```json
@@ -145,7 +180,7 @@ class SolutionDesigner:
             )
         else:
             description_prompt = DATASET_DESCRIPTION_CUSTOM_PROMPT.format(dataset_description=dataset_info)
-        context = DATASET_INSIGHT_PROMPT.format(description=description_prompt)
+        context = DATASET_INSIGHT_PROMPT.format(description=description_prompt, additional_guide=ADDITIONAL_GUIDE)
         rsp = await llm.aask(context)
         rsp = clean_json_from_rsp(rsp)
         analysis_pool = self.process_analysis_pool(json.loads(rsp))
