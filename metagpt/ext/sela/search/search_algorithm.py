@@ -20,12 +20,20 @@ class Random(BaseTreeSearch):
 
 
 class MCTS(BaseTreeSearch):
+    mode = "vanilla"
     def best_child(self):
         def uct(node: Node):
-            n_visits = node.visited if node.visited else self.c_unvisited
+            if self.mode == "dp":
+                n_visits = node.visited if node.visited else self.c_unvisited
+            elif self.mode == "vanilla":
+                n_visits = node.visited
+                if n_visits == 0:
+                    return np.inf
+            else:
+                raise ValueError(f"Invalid mode: {self.mode}")
             avg_value = node.avg_value() if node.visited else node.value / self.c_unvisited
             return avg_value + self.c_explore * np.sqrt(np.log(node.parent.visited) / n_visits)
-
+        
         if len(self.children) == 0:
             return self.root_node
         all_children = [child for children in self.children.values() for child in children]
