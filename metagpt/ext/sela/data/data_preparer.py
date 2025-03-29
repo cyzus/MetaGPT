@@ -40,8 +40,8 @@ class DatasetPreparer:
 
 
 if __name__ == "__main__":
-    dataset_path = "C:/Users/STGF/Documents/workspace/datasets/dpas_st/confidence/train.csv"
-    dataset_preparer = DatasetPreparer("confidence_06", "E2E_label", dataset_path)
+    dataset_path = "PATH/to/train.csv"
+    dataset_preparer = DatasetPreparer(dataset_name="dataset01", target_col="label", data_path=dataset_path)
     dataset_preparer.prepare_dataset()
 
 
